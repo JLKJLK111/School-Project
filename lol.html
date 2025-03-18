@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shuffle MP3 Player</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-size: 28px;
+            text-align: center;
+        }
+        button {
+            font-size: 24px;
+            padding: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        img {
+            margin-top: 20px;
+            width: 300px;
+            height: auto;
+        }
+        input[type="range"] {
+            margin-top: 10px;
+            width: 300px;
+        }
+        label {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Facts about Disabilities</h1>
+    <button id="playButton">Play Sound</button>
+    <audio id="audioPlayer" controls></audio>
+    <label for="volumeSlider">Volume:</label>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+    <img src="https://wgs244.org/wp-content/uploads/2022/07/gif.gif" alt="Disability Rights GIF">
+
+    <script>
+        const audioFiles = [
+            "mms1.mp3", "mms2.mp3", "mms3.mp3", 
+            "mms4.mp3", "mms5.mp3", "mms6.mp3", 
+            "mms7.mp3", "mms8.mp3"
+        ];
+        let playlist = [];
+        let audioPlayer = document.getElementById("audioPlayer");
+        let volumeSlider = document.getElementById("volumeSlider");
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function getNextPlaylist() {
+            playlist = [...audioFiles];
+            shuffleArray(playlist);
+        }
+
+        document.getElementById("playButton").addEventListener("click", function() {
+            if (playlist.length === 0) {
+                getNextPlaylist();
+            }
+            let nextTrack = playlist.shift();
+            audioPlayer.src = nextTrack;
+            audioPlayer.load();
+            audioPlayer.play().catch(error => console.log("Playback error: ", error));
+        });
+
+        volumeSlider.addEventListener("input", function() {
+            audioPlayer.volume = volumeSlider.value;
+        });
+    </script>
+</body>
+</html>
